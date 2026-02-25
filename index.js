@@ -58,8 +58,8 @@ const localStorage = new LocalStorageMock();
 // 配置项（删除原adminPrefix，仅保留必要配置）
 const CONFIG = {
     server: "wss://hack.chat/chat-ws", // 官方WS地址，禁止修改
-    channel: "lounge", // 机器人频道
-    botName: "sunldigv3_bot",
+    channel: "p", // 机器人频道
+    botName: "oreactko_bot",
     debug: false, // 调试模式
     // 颜色配置
     color: {
