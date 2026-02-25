@@ -68,7 +68,7 @@ const CONFIG = {
     },
     // 通用常量
     CONST: {
-        ADMIN_TRIPCODE: '2UE++I', // 管理员专属tripcode
+        ADMIN_TRIPCODE: 'yVGDTl', // 管理员专属tripcode
         cmdPrefix: '!', // 命令前缀
         sendRateLimit: 200, // 防限流发送间隔（ms）
         muteCheckInterval: 10000, // 禁言检查间隔10秒
