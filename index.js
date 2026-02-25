@@ -1,15 +1,15 @@
-// 引入 Node.js 核心模块和第三方依赖
+// Import Modules
 const WebSocket = require('ws');
 const fetch = require('node-fetch');
 const fs = require('fs-extra');
 const path = require('path');
 
-// 模拟浏览器的 localStorage（使用文件存储）
+// Setup LocalStorage
 class LocalStorageMock {
     constructor(storagePath = './storage.json') {
         this.storagePath = storagePath;
         this.data = {};
-        // 加载已有数据
+        // Tải dữ liệu cũ nếu tồn tại
         try {
             if (fs.existsSync(this.storagePath)) {
                 this.data = JSON.parse(fs.readFileSync(this.storagePath, 'utf8'));
@@ -25,11 +25,10 @@ class LocalStorageMock {
 
     setItem(key, value) {
         this.data[key] = value;
-        // 持久化到文件
         try {
             fs.writeFileSync(this.storagePath, JSON.stringify(this.data, null, 2), 'utf8');
         } catch (err) {
-            console.error('[LocalStorage 保存失败]', err);
+            console.error('[Lỗi lưu LocalStorage]', err);
         }
     }
 
@@ -38,7 +37,7 @@ class LocalStorageMock {
         try {
             fs.writeFileSync(this.storagePath, JSON.stringify(this.data, null, 2), 'utf8');
         } catch (err) {
-            console.error('[LocalStorage 删除失败]', err);
+            console.error('[Lỗi xoá LocalStorage]', err);
         }
     }
 
@@ -47,29 +46,29 @@ class LocalStorageMock {
         try {
             fs.writeFileSync(this.storagePath, JSON.stringify(this.data, null, 2), 'utf8');
         } catch (err) {
-            console.error('[LocalStorage 清空失败]', err);
+            console.error('[Lỗi xoá toàn bộ LocalStorage]', err);
         }
     }
 }
 
-// 全局挂载模拟的 localStorage
+// init localStorage
 const localStorage = new LocalStorageMock();
 
-// 配置项（删除原adminPrefix，仅保留必要配置）
+// Config
 const CONFIG = {
-    server: "wss://hack.chat/chat-ws", // 官方WS地址，禁止修改
-    channel: "p", // 机器人频道
+    server: "wss://hack.chat/chat-ws", // WS Server
+    channel: "p", // Tên channel
     botName: "oreactko_bot",
-    debug: false, // 调试模式
-    // 颜色配置
+    debug: false, // Debug mode
+    // Màu
     color: {
-        enable: true, // 是否启用颜色设置
-        hex: "#5ee6ed" // 16进制颜色值（必须以#开头）
+        enable: true, // Trạng thái
+        hex: "#5ee6ed" // Mã hex màu
     },
     // 通用常量
     CONST: {
-        ADMIN_TRIPCODE: 'yVGDTl', // 管理员专属tripcode
-        cmdPrefix: '!', // 命令前缀
+        ADMIN_TRIPCODE: 'yVGDTl', // Admin tripcode
+        cmdPrefix: '!', // Lệnh
         sendRateLimit: 200, // 防限流发送间隔（ms）
         muteCheckInterval: 10000, // 禁言检查间隔10秒
         maxMsgHistory: 5000, // 本地消息最大存储量
@@ -447,7 +446,7 @@ const bot = {
         try {
             // 核心修改：管理员权限判断改为校验tripcode
             if (cmdItem.auth && !this.hasAdminAuth(msg)) {
-                this.sendChat(`无权限，仅tripcode为2UE++I的管理员可执行`);
+                this.sendChat(`无权限，仅tripcode为${CONFIG.CONST.ADMIN_TRIPCODE}的管理员可执行`);
                 return;
             }
             if (cmdItem.params && params.length === 0 && cmdTrigger !== '!help s') {
@@ -1171,7 +1170,7 @@ const bot = {
     handleStop(msg, _) {
         // 核心修改：校验tripcode权限
         if (!this.hasAdminAuth(msg)) {
-            this.sendChat(`无权限，仅tripcode为2UE++I的管理员可执行`);
+            this.sendChat(`无权限，仅tripcode为${CONFIG.CONST.ADMIN_TRIPCODE}的管理员可执行`);
             return;
         }
         try {
