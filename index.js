@@ -58,7 +58,7 @@ const localStorage = new LocalStorageMock();
 // 配置项（删除原adminPrefix，仅保留必要配置）
 const CONFIG = {
     server: "wss://hack.chat/chat-ws", // 官方WS地址，禁止修改
-    channel: "p", // 机器人频道
+    channel: "oreactko", // 机器人频道
     botName: "oreactko_bot",
     debug: false, // 调试模式
     // 颜色配置
@@ -564,9 +564,16 @@ const bot = {
             try {
                 if (this.isMuted) return; // 闭嘴状态不提醒
                 const now = new Date();
-                const currentHour = now.getHours();
-                const currentMinute = now.getMinutes();
-                const currentSecond = now.getSeconds();
+
+              // Lấy timestamp UTC (ms)
+              const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+
+              // GMT+7 = 7 * 60 * 60 * 1000 ms
+              const vietnamTime = new Date(utc + (7 * 60 * 60 * 1000));
+
+              const currentHour = vietnamTime.getHours();
+              const currentMinute = vietnamTime.getMinutes();
+              const currentSecond = vietnamTime.getSeconds();
                 
                 // 整点后10秒内触发，避免重复
                 if (currentMinute === 0 && currentSecond >= 0 && currentSecond <= 10) {
