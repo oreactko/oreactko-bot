@@ -447,7 +447,7 @@ const bot = {
         try {
             // 核心修改：管理员权限判断改为校验tripcode
             if (cmdItem.auth && !this.hasAdminAuth(msg)) {
-                this.sendChat(`Không có quyền, chỉ quản trị viên với tripcode 2UE++I mới có thể thực hiện`);
+                this.sendChat(`Không có quyền, chỉ quản trị viên với tripcode +pcAwQ mới có thể thực hiện`);
                 return;
             }
             if (cmdItem.params && params.length === 0 && cmdTrigger !== '!help s') {
@@ -1171,7 +1171,7 @@ const bot = {
     handleStop(msg, _) {
         // 核心修改：校验tripcode权限
         if (!this.hasAdminAuth(msg)) {
-            this.sendChat(`Không có quyền, chỉ quản trị viên với tripcode 2UE++I mới có thể thực hiện`);
+            this.sendChat(`Không có quyền, chỉ quản trị viên với tripcode +pcAwQ mới có thể thực hiện`);
             return;
         }
         try {
